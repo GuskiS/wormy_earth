@@ -1,0 +1,11 @@
+npm-debug.log
+node_modules/
+
+.idea
+.env
+.vscode
+lerna-debug.log
+
+packages/*/dist
+
+yarn-error.log

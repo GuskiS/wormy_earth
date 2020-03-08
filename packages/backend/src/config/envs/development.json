@@ -1,0 +1,9 @@
+{
+  "env": {
+    "isDev": true,
+    "isProd": false
+  },
+
+  "host": "0.0.0.0",
+  "port": 4200
+}

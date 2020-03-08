@@ -1,0 +1,42 @@
+{
+  "name": "mono-frontend",
+  "version": "1.0.0",
+  "author": "GuskiS <edvards@lazdans.lv>",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "react-scripts build",
+    "start": "react-scripts start",
+    "test": "react-scripts test"
+  },
+  "dependencies": {
+    "react": "16.13.0",
+    "react-dom": "16.13.0",
+    "socket.io-client": "2.3.0",
+    "uuid": "7.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "16.9.23",
+    "@types/react-dom": "16.9.5",
+    "@types/socket.io-client": "1.4.32",
+    "@types/uuid": "7.0.0",
+    "babel-jest": "25.1.0",
+    "react-scripts": "3.4.0"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
