@@ -20,6 +20,10 @@ class Renderer {
   public terrain = (terrain: types.Terrain) => {
     this.canvas.polyline(terrain).fill("darkgreen");
   };
+
+  private get randomColor() {
+    return (Color as any).random();
+  }
 }
 
 export default new Renderer();

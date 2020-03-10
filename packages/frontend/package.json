@@ -11,6 +11,7 @@
     "test": "react-scripts test"
   },
   "dependencies": {
+    "@mohayonao/perlin-noise": "0.2.0",
     "@svgdotjs/svg.js": "3.0.16",
     "react": "16.13.0",
     "react-dom": "16.13.0",
