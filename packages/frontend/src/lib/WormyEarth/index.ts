@@ -13,5 +13,7 @@ export default class WormyEarth {
     Terrain.terminate();
   };
 
-  private debug = () => {};
+  private debug = () => {
+    Terrain.render();
+  };
 }

@@ -13,7 +13,7 @@ class Renderer {
     this.canvas
       .size(width, height)
       .viewbox(0, 0, width, height)
-      .css("background-color", new Color(100, 100, 100));
+      .css("background-color", new Color(70,130,180));
   };
   public terminate = () => {};
 
