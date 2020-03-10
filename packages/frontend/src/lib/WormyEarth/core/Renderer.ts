@@ -18,6 +18,10 @@ class Renderer {
   public terminate = () => {};
 
   public terrain = (terrain: types.Terrain) => {
+    this.canvas
+      .circle(60)
+      .center(60, 60)
+      .fill("#FFA500");
     this.canvas.polyline(terrain).fill("darkgreen");
   };
 }
