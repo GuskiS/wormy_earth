@@ -11,14 +11,14 @@ class Terrain {
   private terrain: types.Terrain = [];
 
   public init = () => {
-    const { size, offset } = constants.canvas;
+    const { size, offset, frequency, precision } = constants.canvas;
 
     this.terrain = [];
     this.terrain.push([0, size.height]);
 
-    for (let x = 0; x < constants.canvas.size.width + 1; x += 10) {
+    for (let x = 0; x < constants.canvas.size.width + 1; x += frequency) {
       const yoff = size.height / 2 + offset;
-      const y = perlin.noise(x / 200) * yoff;
+      const y = perlin.noise(x / precision) * yoff;
       this.terrain.push([x, y]);
     }
     this.terrain.push([constants.canvas.size.width, constants.canvas.size.height]);
