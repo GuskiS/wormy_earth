@@ -2,6 +2,7 @@ import { SVG, Svg, Color, Line, G, Polyline, Circle } from "@svgdotjs/svg.js";
 
 import types from "lib/WormyEarth/utils/types";
 import constants from "lib/WormyEarth/utils/constants";
+import Vector from "lib/WormyEarth/math/Vector";
 
 interface Layers {
   terrain: G;
@@ -51,16 +52,16 @@ class Renderer {
   };
 
   public player = (player: types.Player) => {
-    const [x, y] = player.position;
     this.layers.player
       .circle(32)
-      .center(x, y)
+      .center(player.position.x, player.position.y)
       .fill(this.randomColor);
   };
 
-  public weapon = (player: types.Point, mouse: types.Point) => {
-    const { x, y } = this.convertPosition(mouse[0], mouse[1]);
-    this.elements.weapon.plot([player, [x, y]]).stroke({ width: 5, color: this.randomColor });
+  public weapon = (player: Vector, direction: Vector) => {
+    this.elements.weapon
+      .plot([player.x, player.y, direction.x, direction.y])
+      .stroke({ width: 5, color: this.randomColor });
   };
 
   private get randomColor() {
@@ -68,7 +69,8 @@ class Renderer {
   }
 
   public convertPosition = (x: number, y: number) => {
-    return this.canvas.point(x, y);
+    const point = this.canvas.point(x, y);
+    return new Vector(point.x, point.y);
   };
 }
 
