@@ -1,25 +1,14 @@
-import { SVG, Svg, Color, Line, G, Polyline, Circle } from "@svgdotjs/svg.js";
+import { SVG, Svg, Color } from "@svgdotjs/svg.js";
 
 import types from "lib/WormyEarth/utils/types";
 import constants from "lib/WormyEarth/utils/constants";
 import Vector from "lib/WormyEarth/math/Vector";
 
-interface Layers {
-  terrain: G;
-  player: G;
-}
-
-interface Elements {
-  earth: Polyline;
-  weapon: Line;
-  sun: Circle;
-}
-
 class Renderer {
   private canvas!: Svg;
 
-  private layers!: Layers;
-  private elements!: Elements;
+  private layers!: types.Layers;
+  private elements!: types.Elements;
 
   public init = (selector: string) => {
     const { width, height } = constants.canvas.size;
