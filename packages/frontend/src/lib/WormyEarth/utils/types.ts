@@ -10,11 +10,6 @@ namespace types {
     position: Vector;
   }
 
-  export interface Position {
-    x: number;
-    y: number;
-  }
-
   export interface Layers {
     terrain: G;
     player: G;
