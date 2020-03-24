@@ -2,9 +2,13 @@ import { SVG, Svg, Color } from "@svgdotjs/svg.js";
 
 import types from "lib/WormyEarth/utils/types";
 import constants from "lib/WormyEarth/utils/constants";
+import Vector from "lib/WormyEarth/math/Vector";
 
 class Renderer {
   private canvas!: Svg;
+
+  private layers!: types.Layers;
+  private elements!: types.Elements;
 
   public init = (selector: string) => {
     const { width, height } = constants.canvas.size;
@@ -13,13 +17,51 @@ class Renderer {
     this.canvas
       .size(width, height)
       .viewbox(0, 0, width, height)
-      .css("background-color", new Color(70,130,180));
+      .css("background-color", new Color(70, 130, 180));
+
+    this.layers = {
+      terrain: this.canvas.group().id("group-terrain"),
+      player: this.canvas.group().id("group-player"),
+    };
+
+    this.elements = {
+      earth: this.layers.terrain.polyline(),
+      sun: this.layers.terrain.circle(),
+      weapon: this.layers.player.line(),
+    };
   };
   public terminate = () => {};
 
   public terrain = (terrain: types.Terrain) => {
-    this.canvas.polyline(terrain).fill("darkgreen");
+    this.elements.earth.plot(terrain).fill("darkgreen");
+    this.elements.sun
+      .size(60)
+      .center(80, 80)
+      .fill("yellow");
   };
+
+  public player = (player: types.Player) => {
+    this.layers.player
+      .circle(32)
+      .center(player.position.x, player.position.y)
+      .fill(this.randomColor);
+  };
+
+  public weapon = (player: Vector, direction: Vector) => {
+    this.elements.weapon.plot([player.x, player.y, direction.x, direction.y]).stroke({
+      width: 5,
+      color: this.randomColor,
+    });
+  };
+
+  public convertPosition = (clientX: number, clientY: number) => {
+    const point = this.canvas.point(clientX, clientY);
+    return new Vector(point.x, point.y);
+  };
+
+  private get randomColor() {
+    return (Color as any).random();
+  }
 }
 
 export default new Renderer();
