@@ -19,6 +19,10 @@ class Vector {
     }
   };
 
+  public toRadian = () => {
+    return Math.atan2(this.y, this.x);
+  };
+
   public copy = () => {
     return new Vector(this.x, this.y, this.z);
   };

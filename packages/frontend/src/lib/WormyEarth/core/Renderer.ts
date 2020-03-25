@@ -29,6 +29,7 @@ class Renderer {
       earth: this.layers.terrain.polyline(),
       sun: this.layers.terrain.circle(),
       weapon: this.layers.player.line(),
+      projectile: this.layers.terrain.path(),
     };
   };
   public terminate = () => {};
@@ -43,15 +44,30 @@ class Renderer {
 
   public player = (player: types.Player) => {
     this.layers.player
-      .circle(32)
+      .rect(20, 10)
       .center(player.position.x, player.position.y)
-      .fill(this.randomColor);
+      .fill("black");
+  };
+
+  public projectile = (start: Vector, positions: types.ProjectilePositions) => {
+    const moveTo = `M ${positions.start.x} ${positions.start.y}`;
+    const quadratic = `Q ${positions.midway.x} ${positions.midway.y * 2} ${positions.end.x} ${positions.end.y}`;
+
+    this.elements.projectile
+      .plot(`${moveTo} ${quadratic}`)
+      .stroke({ color: "red", width: 2 })
+      .fill("none");
+
+    this.elements.projectile.transform({
+      translateX: start.x,
+      translateY: start.y,
+    });
   };
 
   public weapon = (player: Vector, direction: Vector) => {
     this.elements.weapon.plot([player.x, player.y, direction.x, direction.y]).stroke({
       width: 5,
-      color: this.randomColor,
+      color: "black",
     });
   };
 
