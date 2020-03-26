@@ -1,29 +1,35 @@
+import Game from "lib/WormyEarth/core/Game";
+import Physics from "lib/WormyEarth/core/Physics";
 import Renderer from "lib/WormyEarth/core/Renderer";
-import Terrain from "lib/WormyEarth/core/Terrain";
-import Players from "lib/WormyEarth/core/Players";
 import Projectile from "lib/WormyEarth/core/Projectile";
 
 export default class WormyEarth {
   public init = (selector: string) => {
-    Renderer.init(selector);
-    Terrain.init();
-    Players.init();
+    const element = document.querySelector<HTMLElement>(selector);
+
+    if (!element) {
+      throw new Error(`Can't find element with selector: ${selector}`);
+    }
+
+    Renderer.init(element, this.cycle);
+    Physics.init(element);
+
+    Game.init();
     Projectile.init();
 
-    this.debug();
+    Game.addPlayer("JOLO");
+    Game.start();
   };
   public terminate = () => {
     Renderer.terminate();
-    Terrain.terminate();
-    Players.terminate();
+    Physics.terminate();
+
+    Game.terminate();
     Projectile.terminate();
   };
 
-  private debug = () => {
-    Terrain.render();
-
-    Players.addPlayer("JOLO");
-
-    Players.render();
+  private cycle = () => {
+    Physics.update();
+    Game.render();
   };
 }

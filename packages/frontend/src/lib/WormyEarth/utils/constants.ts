@@ -8,6 +8,14 @@ const constants = {
       height: 400,
     },
   },
+
+  player: {
+    size: {
+      width: 20,
+      height: 10,
+    },
+    weaponLength: 20,
+  },
 } as const;
 
 export default constants;

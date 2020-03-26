@@ -1,5 +1,4 @@
-import Vector from "lib/WormyEarth/math/Vector";
-import Renderer from "lib/WormyEarth/core/Renderer";
+import { Vector } from "matter-js";
 
 import types from "lib/WormyEarth/utils/types";
 
@@ -10,7 +9,7 @@ class Projectile {
   public terminate = () => {};
 
   public render = (start: Vector, positions: types.ProjectilePositions) => {
-    Renderer.projectile(start, positions);
+    // Renderer.projectile(start, positions);
   };
 
   public calculate = (angle: number, speed = 40) => {
