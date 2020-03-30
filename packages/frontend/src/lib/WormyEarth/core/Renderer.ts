@@ -1,84 +1,99 @@
-import { SVG, Svg, Color } from "@svgdotjs/svg.js";
+import * as Pixi from "pixi.js";
 
-import Vector from "lib/WormyEarth/math/Vector";
-
-import types from "lib/WormyEarth/utils/types";
 import constants from "lib/WormyEarth/utils/constants";
 
+import Player from "lib/WormyEarth/entities/Player";
+import Terrain from "lib/WormyEarth/entities/Terrain";
+
+const colors = {
+  sky: Pixi.utils.string2hex("#4682b4"),
+  terrain: Pixi.utils.string2hex("#006400"),
+  player: Pixi.utils.string2hex("#000000"),
+};
+
 class Renderer {
-  private canvas!: Svg;
+  private app!: Pixi.Application;
 
-  private layers!: types.Layers;
-  private elements!: types.Elements;
+  private elements!: Record<"terrain" | "player" | "weapon", Pixi.Graphics>;
 
-  public init = (selector: string) => {
-    const { width, height } = constants.canvas.size;
+  public init = (parent: HTMLElement, cycle: () => void) => {
+    // Init application
+    this.app = new Pixi.Application({
+      antialias: true,
+      width: constants.canvas.size.width,
+      height: constants.canvas.size.height,
+      backgroundColor: colors.sky,
+    });
 
-    this.canvas = SVG().addTo(selector);
-    this.canvas
-      .size(width, height)
-      .viewbox(0, 0, width, height)
-      .css("background-color", new Color(70, 130, 180));
-
-    this.layers = {
-      terrain: this.canvas.group().id("group-terrain"),
-      player: this.canvas.group().id("group-player"),
-    };
-
+    // Init elements
     this.elements = {
-      earth: this.layers.terrain.polyline(),
-      sun: this.layers.terrain.circle(),
-      weapon: this.layers.player.line(),
-      projectile: this.layers.terrain.path(),
+      terrain: new Pixi.Graphics(),
+      player: new Pixi.Graphics(),
+      weapon: new Pixi.Graphics(),
     };
+    const list = Object.values(this.elements);
+
+    // Init cycle cycle
+    this.app.ticker.add(() => {
+      list.forEach((element) => element.clear());
+      cycle();
+    });
+
+    // Add elements to stage
+    list.forEach((element) => {
+      this.app.stage.addChild(element);
+    });
+
+    // Add canvas to DOM
+    parent.appendChild(this.app.view);
   };
   public terminate = () => {};
 
-  public terrain = (terrain: types.Terrain) => {
-    this.elements.earth.plot(terrain).fill("darkgreen");
-    this.elements.sun
-      .size(60)
-      .center(80, 80)
-      .fill("yellow");
-  };
-
-  public player = (player: types.Player) => {
-    this.layers.player
-      .rect(20, 10)
-      .center(player.position.x, player.position.y)
-      .fill("black");
-  };
-
-  public projectile = (start: Vector, positions: types.ProjectilePositions) => {
-    const moveTo = `M ${positions.start.x} ${positions.start.y}`;
-    const quadratic = `Q ${positions.midway.x} ${positions.midway.y * 2} ${positions.end.x} ${positions.end.y}`;
-
-    this.elements.projectile
-      .plot(`${moveTo} ${quadratic}`)
-      .stroke({ color: "red", width: 2 })
-      .fill("none");
-
-    this.elements.projectile.transform({
-      translateX: start.x,
-      translateY: start.y,
-    });
-  };
-
-  public weapon = (player: Vector, direction: Vector) => {
-    this.elements.weapon.plot([player.x, player.y, direction.x, direction.y]).stroke({
-      width: 5,
-      color: "black",
-    });
-  };
-
-  public convertPosition = (clientX: number, clientY: number) => {
-    const point = this.canvas.point(clientX, clientY);
-    return new Vector(point.x, point.y);
-  };
-
-  private get randomColor() {
-    return (Color as any).random();
+  public get mouse() {
+    return this.app.renderer.plugins.interaction.mouse.global;
   }
+
+  public terrain = (terrain: Terrain) => {
+    // Render terrain
+    this.elements.terrain
+      .beginFill(colors.terrain)
+      .drawPolygon(terrain.polygon)
+      .endFill();
+  };
+
+  public player = (player: Player) => {
+    // Render player
+    this.elements.player
+      .beginFill(colors.player)
+      .drawRect(0, 0, player.size.width, player.size.height)
+      .endFill();
+
+    // Move player half size higher
+    this.elements.player.position.set(
+      player.position.x - player.size.width / 2,
+      player.position.y - player.size.height / 2,
+    );
+
+    // Render weapon
+    this.elements.weapon
+      .lineStyle(4, colors.player)
+      .moveTo(player.position.x, player.position.y)
+      .lineTo(player.weapon.x, player.weapon.y)
+      .endFill();
+  };
+
+  // public projectile = (start: Vector, positions: types.ProjectilePositions) => {
+  //   const moveTo = `M ${positions.start.x} ${positions.start.y}`;
+  //   const quadratic = `Q ${positions.midway.x} ${positions.midway.y * 2} ${positions.end.x} ${positions.end.y}`;
+  //   this.elements.projectile
+  //     .plot(`${moveTo} ${quadratic}`)
+  //     .stroke({ color: "red", width: 2 })
+  //     .fill("none");
+  //   this.elements.projectile.transform({
+  //     translateX: start.x,
+  //     translateY: start.y,
+  //   });
+  // };
 }
 
 export default new Renderer();

@@ -19,7 +19,7 @@ const Game = memo(() => {
     };
   }, [socket, game]);
 
-  return <div className={styles.container}>YOLO</div>;
+  return <div className={styles.container}></div>;
 });
 
 export default Game;
