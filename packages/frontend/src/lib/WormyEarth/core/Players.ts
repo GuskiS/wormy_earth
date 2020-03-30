@@ -11,7 +11,6 @@ class Players {
     this.list = [];
     this.events();
   };
-  public terminate = () => {};
 
   public render = () => {
     this.list.forEach((player) => {
@@ -20,7 +19,7 @@ class Players {
   };
 
   public addPlayer = (name: string) => {
-    const position = new Vector(constants.canvas.size.width / 2, constants.canvas.size.height / 2);
+    const position = new Vector(constants.canvas.size.width / 2, 295);
     this.list.push({ name, position });
     this.current = this.list[0];
   };
@@ -32,7 +31,7 @@ class Players {
       const direction = Renderer.convertPosition(event.clientX, event.clientY)
         .sub(player)
         .normalize()
-        .mult(100)
+        .mult(20)
         .add(player);
 
       Renderer.weapon(player, direction);
