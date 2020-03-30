@@ -30,7 +30,6 @@ class Renderer {
       sun: this.layers.terrain.circle(),
     };
   };
-  public terminate = () => {};
 
   public terrain = (terrain: types.Terrain) => {
     this.elements.earth.plot(terrain).fill("darkgreen");
@@ -42,15 +41,13 @@ class Renderer {
 
   public player = (player: types.Player) => {
     this.layers.player
-      .circle(32)
+      .rect(20, 10)
       .center(player.position.x, player.position.y)
-      .fill(this.randomColor);
+      .fill("black");
   };
 
   public weapon = (player: Vector, direction: Vector) => {
-    this.elements.weapon
-      .plot([player.x, player.y, direction.x, direction.y])
-      .stroke({ width: 5, color: this.randomColor });
+    this.elements.weapon.plot([player.x, player.y, direction.x, direction.y]).stroke({ width: 5, color: "black" });
   };
 
   private get randomColor() {
