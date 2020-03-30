@@ -11,4 +11,7 @@ module.exports = {
     ecmaVersion: 2019, // Allows parsing of modern ECMA features
     sourceType: "module", // Allows for the use of imports
   },
+  rules: {
+    "@typescript-eslint/explicit-function-return-type": "off",
+  },
 };
