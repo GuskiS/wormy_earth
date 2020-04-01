@@ -1,25 +1,12 @@
-import Vector from "lib/WormyEarth/math/Vector";
-import { Polyline, Line, Circle, G } from "@svgdotjs/svg.js";
+/* eslint-disable @typescript-eslint/no-namespace */
 
 namespace types {
-  export type Point = [number, number];
-  export type Terrain = Point[];
-
-  export interface Player {
-    name: string;
-    position: Vector;
+  export interface Size {
+    width: number;
+    height: number;
   }
 
-  export interface Layers {
-    terrain: G;
-    player: G;
-  }
-
-  export interface Elements {
-    earth: Polyline;
-    weapon: Line;
-    sun: Circle;
-  }
+  export type ProjectilePositions = Record<"start" | "midway" | "end", { x: number; y: number }>;
 }
 
 export default types;
