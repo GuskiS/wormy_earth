@@ -1,4 +1,4 @@
-import { Body, Vector } from "matter-js";
+import Matter from "matter-js";
 // import Perlin from "@mohayonao/perlin-noise";
 
 import constants from "lib/WormyEarth/utils/constants";
@@ -9,8 +9,11 @@ import Renderer from "lib/WormyEarth/core/Renderer";
 // const perlin = new Perlin();
 
 class Terrain {
-  public plot!: Vector[];
-  private body!: Body;
+  public plot!: Matter.Vector[];
+  public elements = {
+    terrain: Renderer.createGraphics(),
+  };
+  private body!: Matter.Body;
 
   constructor() {
     const result = this.generateRandomTerrain();
@@ -28,18 +31,18 @@ class Terrain {
   }
 
   private generateRandomTerrain = () => {
-    const plot: Vector[] = [];
+    const plot: Matter.Vector[] = [];
     const { size, offset, frequency /* precision */ } = constants.canvas;
     const position = { x: size.width / 2, y: size.height - offset / 2 };
 
-    plot.push(Vector.create(0, size.height));
+    plot.push(Matter.Vector.create(0, size.height));
     for (let x = 0; x < size.width + 1; x += frequency) {
       const yoff = size.height / 2 + offset;
       // const y = perlin.noise(x / precision) * yoff;
       const y = yoff;
-      plot.push(Vector.create(x, y));
+      plot.push(Matter.Vector.create(x, y));
     }
-    plot.push(Vector.create(size.width, size.height));
+    plot.push(Matter.Vector.create(size.width, size.height));
 
     return { plot, position };
   };

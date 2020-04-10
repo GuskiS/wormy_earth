@@ -5,8 +5,6 @@ namespace types {
     width: number;
     height: number;
   }
-
-  export type ProjectilePositions = Record<"start" | "midway" | "end", { x: number; y: number }>;
 }
 
 export default types;

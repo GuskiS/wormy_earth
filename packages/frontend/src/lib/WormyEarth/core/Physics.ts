@@ -1,4 +1,4 @@
-import { Engine, Bodies, World, Vector, Render } from "matter-js";
+import * as Matter from "matter-js";
 
 import types from "lib/WormyEarth/utils/types";
 import constants from "lib/WormyEarth/utils/constants";
@@ -6,10 +6,10 @@ import constants from "lib/WormyEarth/utils/constants";
 (window as any).decomp = require("poly-decomp");
 
 class Physics {
-  private engine!: Engine;
+  private engine!: Matter.Engine;
 
   public init = (parent: HTMLElement) => {
-    this.engine = Engine.create();
+    this.engine = Matter.Engine.create();
 
     this.debug(parent);
   };
@@ -17,27 +17,37 @@ class Physics {
   public terminate = () => {};
 
   public update = () => {
-    Engine.update(this.engine);
+    Matter.Engine.update(this.engine);
   };
 
-  public terrain = (plot: Vector[], position: Vector) => {
-    const body = Bodies.fromVertices(position.x, position.y, [plot], { isStatic: true });
+  public terrain = (plot: Matter.Vector[], position: Matter.Vector) => {
+    const body = Matter.Bodies.fromVertices(position.x, position.y, [plot], { isStatic: true });
 
-    World.add(this.engine.world, body);
+    Matter.World.add(this.engine.world, body);
 
     return body;
   };
 
-  public player = (position: Vector, size: types.Size) => {
-    const body = Bodies.rectangle(position.x, position.y, size.width, size.height);
+  public player = (position: Matter.Vector, size: types.Size) => {
+    const body = Matter.Bodies.rectangle(position.x, position.y, size.width, size.height);
 
-    World.add(this.engine.world, body);
+    Matter.World.add(this.engine.world, body);
+
+    return body;
+  };
+
+  public projectile = (position: Matter.Vector, size: number) => {
+    const body = Matter.Bodies.circle(position.x, position.y, size, {
+      density: 1,
+    });
+
+    Matter.World.add(this.engine.world, body);
 
     return body;
   };
 
   private debug = (element: HTMLElement) => {
-    const render = Render.create({
+    const render = Matter.Render.create({
       element,
       engine: this.engine,
       options: {
@@ -45,7 +55,7 @@ class Physics {
         height: constants.canvas.size.height,
       },
     });
-    Render.run(render);
+    Matter.Render.run(render);
   };
 }
 

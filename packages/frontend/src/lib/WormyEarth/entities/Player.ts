@@ -1,4 +1,4 @@
-import { Body, Vector } from "matter-js";
+import * as Matter from "matter-js";
 
 import Physics from "lib/WormyEarth/core/Physics";
 import Renderer from "lib/WormyEarth/core/Renderer";
@@ -8,13 +8,17 @@ import constants from "lib/WormyEarth/utils/constants";
 
 class Player {
   public name: string;
-  public weapon: Vector;
-  private body: Body;
+  public weapon: Matter.Vector;
+  public elements = {
+    player: Renderer.createGraphics(),
+    weapon: Renderer.createGraphics(),
+  };
+  private body: Matter.Body;
 
-  constructor(name: string, position: Vector) {
+  constructor(name: string, position: Matter.Vector) {
     this.name = name;
     this.body = Physics.player(position, this.size);
-    this.weapon = Vector.clone(this.body.position);
+    this.weapon = Matter.Vector.clone(this.body.position);
   }
 
   public render = () => {
@@ -26,7 +30,7 @@ class Player {
   public get size(): types.Size {
     return constants.player.size;
   }
-  public get position(): Vector {
+  public get position(): Matter.Vector {
     return this.body.position;
   }
 
@@ -34,10 +38,10 @@ class Player {
     this.weapon.x = Renderer.mouse.x;
     this.weapon.y = Math.min(Renderer.mouse.y, this.body.position.y);
 
-    this.weapon = Vector.sub(this.weapon, this.body.position);
-    this.weapon = Vector.normalise(this.weapon);
-    this.weapon = Vector.mult(this.weapon, constants.player.weaponLength);
-    this.weapon = Vector.add(this.weapon, this.body.position);
+    this.weapon = Matter.Vector.sub(this.weapon, this.body.position);
+    this.weapon = Matter.Vector.normalise(this.weapon);
+    this.weapon = Matter.Vector.mult(this.weapon, constants.player.weaponLength);
+    this.weapon = Matter.Vector.add(this.weapon, this.body.position);
   };
 }
 
