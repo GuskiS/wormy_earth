@@ -7,13 +7,14 @@ import Player from "lib/WormyEarth/entities/Player";
 import Terrain from "lib/WormyEarth/entities/Terrain";
 import Projectile from "lib/WormyEarth/entities/Projectile";
 
-import constants from "lib/WormyEarth/utils/constants";
+import constants, { KeyboardButton } from "lib/WormyEarth/utils/constants";
 
 class Game {
   private currentPlayer!: Player;
   private terrain!: Terrain;
   private players!: Player[];
   private projectiles!: Projectile[];
+  private keys: Record<number, boolean> = {};
 
   public init = () => {
     this.terrain = new Terrain();
@@ -21,6 +22,9 @@ class Game {
     this.projectiles = [];
 
     this.debug();
+
+    document.addEventListener("keydown", this.onKeyDown);
+    document.addEventListener("keyup", this.onKeyUp);
   };
   public terminate = () => {};
 
@@ -69,6 +73,35 @@ class Game {
     const x = constants.canvas.size.width / 2;
     const y = 100;
     return Matter.Vector.create(x, y);
+  };
+
+  private onKeyDown = (event: KeyboardEvent) => {
+    this.keys[event.keyCode] = true;
+    this.movePlayer();
+  };
+
+  private onKeyUp = (event: KeyboardEvent) => {
+    this.keys[event.keyCode] = false;
+    this.movePlayer();
+  };
+
+  private movePlayer = () => {
+    const velocity = { x: 0, y: 0 };
+
+    if (this.keys[KeyboardButton.left] || this.keys[KeyboardButton.a]) {
+      velocity.x--;
+    }
+    if (this.keys[KeyboardButton.up] || this.keys[KeyboardButton.w]) {
+      velocity.y--;
+    }
+    if (this.keys[KeyboardButton.right] || this.keys[KeyboardButton.d]) {
+      velocity.x++;
+    }
+    if (this.keys[KeyboardButton.down] || this.keys[KeyboardButton.s]) {
+      velocity.y++;
+    }
+
+    this.currentPlayer.move(velocity);
   };
 }
 
