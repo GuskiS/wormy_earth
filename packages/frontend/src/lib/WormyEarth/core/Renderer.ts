@@ -74,11 +74,11 @@ class Renderer {
       .drawRect(0, 0, player.size.width, player.size.height)
       .endFill();
 
-    // Move player half size higher
-    player.elements.player.position.set(
-      player.position.x - player.size.width / 2,
-      player.position.y - player.size.height / 2,
-    );
+    player.elements.player.pivot.set(player.size.width / 2, player.size.height / 2);
+
+    player.elements.player.position.set(player.position.x, player.position.y);
+
+    player.elements.player.rotation = player.angle;
 
     // Render weapon
     player.elements.weapon
