@@ -29,7 +29,9 @@ class Physics {
   };
 
   public player = (position: Matter.Vector, size: types.Size) => {
-    const body = Matter.Bodies.rectangle(position.x, position.y, size.width, size.height);
+    const body = Matter.Bodies.rectangle(position.x, position.y, size.width, size.height, {
+      density: constants.player.density,
+    });
 
     Matter.World.add(this.engine.world, body);
 

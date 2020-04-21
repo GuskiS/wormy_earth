@@ -27,12 +27,19 @@ class Player {
     Renderer.player(this);
   };
 
-  public get size(): types.Size {
+  public get size(): Readonly<types.Size> {
     return constants.player.size;
   }
-  public get position(): Matter.Vector {
+  public get position(): Readonly<Matter.Vector> {
     return this.body.position;
   }
+  public get angle(): Readonly<number> {
+    return this.body.angle;
+  }
+
+  public move = (velocity: Matter.Vector) => {
+    Matter.Body.setVelocity(this.body, velocity);
+  };
 
   private focusWeapon = () => {
     this.weapon.x = Renderer.mouse.x;
