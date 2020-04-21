@@ -8,7 +8,6 @@ import Terrain from "lib/WormyEarth/entities/Terrain";
 import Projectile from "lib/WormyEarth/entities/Projectile";
 
 import constants, { KeyboardButton } from "lib/WormyEarth/utils/constants";
-import { throws } from "assert";
 
 class Game {
   private currentPlayer!: Player;
