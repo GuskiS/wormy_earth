@@ -10,7 +10,7 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
-    "fastify": "2.12.1",
+    "fastify": "2.15.1",
     "fastify-cors": "3.0.2",
     "fastify-helmet": "3.0.2",
     "fastify-sensible": "2.1.1",
